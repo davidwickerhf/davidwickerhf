@@ -19,4 +19,4 @@ BSc in Computer Science student at Maastricht University.
 
 ---
 
-[![](https://visitcount.itsvg.in/api?id=davidwickerhf&icon=2&color=6)](https://visitcount.itsvg.in)
+[![](https://visitcount.itsvg.in/api?id=davidwickerhf&label=Profile%20Views&color=12&icon=5&pretty=true)](https://visitcount.itsvg.in)
