@@ -9,13 +9,14 @@ BSc in Computer Science student at Maastricht University.
 
 # 📊 GitHub Stats:
 
-![](https://github-readme-stats.vercel.app/api?username=davidwickerhf&theme=tokyonight&hide_border=false&include_all_commits=true&count_private=false)<br/>
-![](https://github-readme-streak-stats.herokuapp.com/?user=davidwickerhf&theme=tokyonight&hide_border=false)<br/>
-![](https://github-readme-stats.vercel.app/api/top-langs/?username=davidwickerhf&theme=tokyonight&hide_border=false&include_all_commits=true&count_private=false&layout=compact)
+![David's GitHub stats](https://github-readme-stats.vercel.app/api?username=davidwickerhf&show_icons=true&theme=transparent)
+![](https://github-readme-stats.vercel.app/api?username=davidwickerhf&theme=transparent&hide_border=false&include_all_commits=true&count_private=false)<br/>
+![](https://github-readme-streak-stats.herokuapp.com/?user=davidwickerhf&theme=transparent&hide_border=false)<br/>
+![](https://github-readme-stats.vercel.app/api/top-langs/?username=davidwickerhf&theme=transparent&hide_border=false&include_all_commits=true&count_private=false&layout=compact)
 
 ## 🏆 GitHub Trophies
 
-![](https://github-profile-trophy.vercel.app/?username=davidwickerhf&theme=discord&no-frame=false&no-bg=true&margin-w=4)
+![](https://github-profile-trophy.vercel.app/?username=davidwickerhf&theme=transparent&no-frame=false&no-bg=true&margin-w=4)
 
 ---
 
