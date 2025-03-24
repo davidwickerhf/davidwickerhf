@@ -1,6 +1,6 @@
 # 🌻 About Me:
 
-Climate activist, developer, photographer.
+Developer, photographer.
 BSc in Computer Science student at Maastricht University.
 
 # 💻 Tech Stack:
