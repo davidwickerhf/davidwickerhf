@@ -2,8 +2,8 @@
   <picture>
     <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/hero-dark.png">
     <source media="(prefers-reduced-motion: reduce)" srcset="assets/hero-light.png">
-    <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.gif">
-    <img src="assets/hero-light.gif" width="1200" alt="David Wicker — making complex information useful to people. A rotating network connects legal research, language, and knowledge.">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.png">
+    <img src="assets/hero-light.png" width="1200" alt="David Wicker — making complex information useful to people. A rotating network connects legal research, language, and knowledge.">
   </picture>
 </a>
 
@@ -29,8 +29,8 @@ At the [Brightlands Institute for Smart Society](https://www.biss-institute.com/
   <picture>
     <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/case-law-dark.png">
     <source media="(prefers-reduced-motion: reduce)" srcset="assets/case-law-light.png">
-    <source media="(prefers-color-scheme: dark)" srcset="assets/case-law-dark.gif">
-    <img src="assets/case-law-light.gif" width="1200" alt="01 — Case Law Explorer. From legal corpora to citations and discovery. Explore the architecture.">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/case-law-dark.png">
+    <img src="assets/case-law-light.png" width="1200" alt="01 — Case Law Explorer. From legal corpora to citations and discovery. Explore the architecture.">
   </picture>
 </a>
 
@@ -63,8 +63,8 @@ flowchart LR
   <picture>
     <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/hayeren-dark.png">
     <source media="(prefers-reduced-motion: reduce)" srcset="assets/hayeren-light.png">
-    <source media="(prefers-color-scheme: dark)" srcset="assets/hayeren-dark.gif">
-    <img src="assets/hayeren-light.gif" width="1200" alt="02 — Hayeren. Eastern Armenian: read, understand, remember. Explore the architecture.">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/hayeren-dark.png">
+    <img src="assets/hayeren-light.png" width="1200" alt="02 — Hayeren. Eastern Armenian: read, understand, remember. Explore the architecture.">
   </picture>
 </a>
 
@@ -98,8 +98,8 @@ flowchart LR
   <picture>
     <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/commonfold-dark.png">
     <source media="(prefers-reduced-motion: reduce)" srcset="assets/commonfold-light.png">
-    <source media="(prefers-color-scheme: dark)" srcset="assets/commonfold-dark.gif">
-    <img src="assets/commonfold-light.gif" width="1200" alt="03 — Commonfold. Personal knowledge: capture, review, recall. Explore the architecture.">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/commonfold-dark.png">
+    <img src="assets/commonfold-light.png" width="1200" alt="03 — Commonfold. Personal knowledge: capture, review, recall. Explore the architecture.">
   </picture>
 </a>
 
@@ -148,4 +148,4 @@ I photograph places and everyday life, study Eastern Armenian, and work on educa
 
 **Have a difficult system to make usable?** [Let's talk ↗](https://wicker.life/collaborate)
 
-<sub>Original artwork, rendered from code. [Still version](README-STATIC.md) · [How this README works](DESIGN.md)</sub>
+<sub>Original artwork, rendered from code. [Animated version](README.md) · [How this README works](DESIGN.md)</sub>
