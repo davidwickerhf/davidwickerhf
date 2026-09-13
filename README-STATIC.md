@@ -1,16 +1,17 @@
 <a href="https://wicker.life">
   <picture>
-    <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/hero-dark.png">
-    <source media="(prefers-reduced-motion: reduce)" srcset="assets/hero-light.png">
-    <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.png">
-    <img src="assets/hero-light.png" width="1200" alt="David Wicker — making complex information useful to people. A rotating network connects legal research, language, and knowledge.">
+    <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/hero-dark-still.svg">
+    <source media="(prefers-reduced-motion: reduce)" srcset="assets/hero-light-still.svg">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark-still.svg">
+    <img src="assets/hero-light-still.svg" width="1200" alt="David Wicker — developer and researcher in Maastricht, the Netherlands. Animated network artwork.">
   </picture>
 </a>
 
 <p align="center">
   <a href="https://wicker.life"><b>Portfolio ↗</b></a> &nbsp; / &nbsp;
   <a href="#selected-work">Selected work</a> &nbsp; / &nbsp;
-  <a href="#public-code">Public code</a> &nbsp; / &nbsp;
+  <a href="#research-contributions">Research code</a> &nbsp; / &nbsp;
+  <a href="#datasets">Datasets</a> &nbsp; / &nbsp;
   <a href="#beyond-software">Beyond software</a> &nbsp; / &nbsp;
   <a href="https://wicker.life/collaborate">Get in touch ↗</a>
 </p>
@@ -21,16 +22,20 @@ Full-stack developer and researcher in **Maastricht, the Netherlands**. I build 
 
 At the [Brightlands Institute for Smart Society](https://www.biss-institute.com/en/team/david-wicker), I work on legal research infrastructure with the Maastricht research and engineering teams. Independently, I design and build language-learning tools, knowledge systems, and client websites.
 
-[CV](https://wicker.life/cv) · [Research](https://wicker.life/research) · [LinkedIn](https://www.linkedin.com/in/davidwickerhf/)
+<p>
+  <a href="https://wicker.life/cv"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/button-cv-dark.svg"><img src="assets/button-cv-light.svg" width="90" height="42" alt="CV"></picture></a>
+  <a href="https://wicker.life/research"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/button-research-dark.svg"><img src="assets/button-research-light.svg" width="132" height="42" alt="Research"></picture></a>
+  <a href="https://www.linkedin.com/in/davidwickerhf/"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/button-linkedin-dark.svg"><img src="assets/button-linkedin-light.svg" width="132" height="42" alt="LinkedIn"></picture></a>
+</p>
 
 ## Selected work
 
 <a href="https://wicker.life/research/case-law-explorer">
   <picture>
-    <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/case-law-dark.png">
-    <source media="(prefers-reduced-motion: reduce)" srcset="assets/case-law-light.png">
-    <source media="(prefers-color-scheme: dark)" srcset="assets/case-law-dark.png">
-    <img src="assets/case-law-light.png" width="1200" alt="01 — Case Law Explorer. From legal corpora to citations and discovery. Explore the architecture.">
+    <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/case-law-dark-still.svg">
+    <source media="(prefers-reduced-motion: reduce)" srcset="assets/case-law-light-still.svg">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/case-law-dark-still.svg">
+    <img src="assets/case-law-light-still.svg" width="1200" alt="01 — Case Law Explorer. From legal corpora to citations and discovery. Explore the architecture.">
   </picture>
 </a>
 
@@ -61,10 +66,10 @@ flowchart LR
 
 <a href="https://wicker.life/projects/hayeren">
   <picture>
-    <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/hayeren-dark.png">
-    <source media="(prefers-reduced-motion: reduce)" srcset="assets/hayeren-light.png">
-    <source media="(prefers-color-scheme: dark)" srcset="assets/hayeren-dark.png">
-    <img src="assets/hayeren-light.png" width="1200" alt="02 — Hayeren. Eastern Armenian: read, understand, remember. Explore the architecture.">
+    <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/hayeren-dark-still.svg">
+    <source media="(prefers-reduced-motion: reduce)" srcset="assets/hayeren-light-still.svg">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/hayeren-dark-still.svg">
+    <img src="assets/hayeren-light-still.svg" width="1200" alt="02 — Hayeren. Eastern Armenian: read, understand, remember. Explore the architecture.">
   </picture>
 </a>
 
@@ -96,10 +101,10 @@ flowchart LR
 
 <a href="https://wicker.life/projects/commonfold">
   <picture>
-    <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/commonfold-dark.png">
-    <source media="(prefers-reduced-motion: reduce)" srcset="assets/commonfold-light.png">
-    <source media="(prefers-color-scheme: dark)" srcset="assets/commonfold-dark.png">
-    <img src="assets/commonfold-light.png" width="1200" alt="03 — Commonfold. Personal knowledge: capture, review, recall. Explore the architecture.">
+    <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="assets/commonfold-dark-still.svg">
+    <source media="(prefers-reduced-motion: reduce)" srcset="assets/commonfold-light-still.svg">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/commonfold-dark-still.svg">
+    <img src="assets/commonfold-light-still.svg" width="1200" alt="03 — Commonfold. Personal knowledge: capture, review, recall. Explore the architecture.">
   </picture>
 </a>
 
@@ -126,15 +131,24 @@ flowchart LR
 
 </details>
 
-## Public code
+## Research contributions
 
-A few entry points into my research software and contributions:
+- **[cellar-extractor](https://github.com/maastrichtlawtech/cellar-extractor)** — EU case-law extraction, multilingual full text, and citation relationships from CELLAR and EUR-Lex.
+- **[echr-extractor](https://github.com/maastrichtlawtech/echr-extractor)** — European Court of Human Rights data from HUDOC, including full text, legal sections, and citation networks.
+- **[ECtHR citation rankings](https://github.com/davidwickerhf/rankings)** — Code, data, and reproducible analyses for my research on how network centrality relates to the importance of court judgments.
 
-| Repository | What it does |
+The extraction libraries are developed with the [Maastricht Law & Tech Lab](https://github.com/maastrichtlawtech).
+
+## Datasets
+
+Legal data I publish on [Hugging Face](https://huggingface.co/davidwickerhf):
+
+| Dataset | Contents |
 | --- | --- |
-| [cellar-extractor](https://github.com/maastrichtlawtech/cellar-extractor) | Extracts and enriches EU case law with full text, metadata, and citation relationships. |
-| [cjeu-migration](https://github.com/davidwickerhf/cjeu-migration) | Runs resumable case-law extraction and publishes research datasets to Hugging Face. |
-| [metricanalysis](https://github.com/davidwickerhf/metricanalysis) | Compares graph centrality measures against reference data. |
+| [CJEU / CELLAR](https://huggingface.co/datasets/davidwickerhf/cjeu-opendata) | EU case-law metadata, multilingual full text, and citation links. |
+| [Rechtspraak OpenData](https://huggingface.co/datasets/davidwickerhf/rechtspraak-opendata) | Raw Dutch court-data snapshots and pipeline export archives. |
+| [ECLI → BWB references](https://huggingface.co/datasets/davidwickerhf/ecli-bwb-id) | Links between Dutch court decisions and the legislation they cite. |
+| **ECHR · coming soon** | European Court of Human Rights case law. |
 
 [More projects and architecture notes ↗](https://wicker.life/projects)
 

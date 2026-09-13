@@ -1,4 +1,4 @@
-"""Render the profile's original artwork. Python 3.10+ and Pillow 12.2.0.
+"""Render the profile's original vector artwork. Python 3.10+ and fontTools.
 
 Run from anywhere: python3 scripts/render_artwork.py
 All geometry is illustrative; it does not represent live research data.
@@ -6,18 +6,10 @@ All geometry is illustrative; it does not represent live research data.
 
 from pathlib import Path
 import math
-from PIL import Image, ImageDraw, ImageFont
+from vector_canvas import Canvas, THEMES
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
-WIDTH = 1200
-SCALE = 2
-FRAMES = 72
-THEMES = {
-    "light": {"bg": "#f1eee6", "ink": "#171b19", "muted": "#4e5551", "line": "#d3d4c9", "accent": "#294f48", "signal": "#9f4c38"},
-    "dark": {"bg": "#111d1b", "ink": "#f1eee6", "muted": "#a7b8af", "line": "#30433d", "accent": "#b9d0c8", "signal": "#e39374"},
-}
-
 
 def rgb(value):
     return tuple(bytes.fromhex(value.lstrip("#")))
@@ -25,40 +17,6 @@ def rgb(value):
 
 def blend(a, b, t):
     return tuple(round(x + (y - x) * t) for x, y in zip(rgb(a), rgb(b)))
-
-
-class Canvas:
-    def __init__(self, height, theme):
-        self.c = THEMES[theme]
-        self.im = Image.new("RGB", (WIDTH * SCALE, height * SCALE), self.c["bg"])
-        self.d = ImageDraw.Draw(self.im)
-        self.height = height
-
-    def text(self, xy, text, size=16, color="ink", serif=False):
-        font = "InstrumentSerif-Regular.ttf" if serif else "Manrope.ttf"
-        f = ImageFont.truetype(str(ASSETS / "fonts" / font), round(size * SCALE))
-        if not serif:
-            f.set_variation_by_axes([450])
-        self.d.text(tuple(round(v * SCALE) for v in xy), text, font=f,
-                    fill=self.c.get(color, color), anchor="lt")
-
-    def line(self, points, color="line", width=1):
-        self.d.line([(round(x * SCALE), round(y * SCALE)) for x, y in points],
-                    fill=self.c.get(color, color), width=max(1, round(width * SCALE)))
-
-    def circle(self, xy, radius, color="accent", fill=True, width=1):
-        x, y = xy
-        box = tuple(round(v * SCALE) for v in (x-radius, y-radius, x+radius, y+radius))
-        self.d.ellipse(box, fill=self.c.get(color, color) if fill else None,
-                       outline=None if fill else self.c.get(color, color), width=round(width*SCALE))
-
-    def rect(self, box, color="line", fill=False):
-        box = tuple(round(v * SCALE) for v in box)
-        self.d.rectangle(box, fill=self.c.get(color, color) if fill else None,
-                         outline=None if fill else self.c.get(color, color), width=SCALE)
-
-    def image(self):
-        return self.im.resize((WIDTH, self.height), Image.Resampling.LANCZOS)
 
 
 def project(x, y, z, angle, cx=888, cy=287, radius=198):
@@ -69,62 +27,64 @@ def project(x, y, z, angle, cx=888, cy=287, radius=198):
     return cx+x*radius*perspective, cy+y*radius*perspective, z
 
 
-def hero(theme, frame):
-    c = Canvas(580, theme)
-    t = frame / FRAMES
-    c.text((42, 29), "DW /", 18, "accent")
-    c.text((117, 31), "RESEARCH  /  SOFTWARE  /  PUBLIC LIFE", 13, "muted")
-    c.text((923, 31), "MAASTRICHT, NL", 13, "muted")
-    c.line([(42, 65), (1158, 65)])
-
-    # An oblique, rotating spherical mesh: information acquiring structure.
-    for x in range(648, 1159, 30):
-        for y in range(95, 490, 30):
-            c.circle((x, y), .6, "line")
-    nodes = []
+def sphere(c, motion):
+    frames = 32 if motion else 1
     bands, meridians = 13, 24
-    for i in range(bands):
-        lat = -math.pi/2 + (i+1)*math.pi/(bands+1)
-        for j in range(meridians):
-            lon = j*math.tau/meridians
-            nodes.append(project(math.cos(lat)*math.cos(lon), math.sin(lat),
-                                 math.cos(lat)*math.sin(lon), t*math.tau))
-    edges = []
-    for i in range(bands):
-        for j in range(meridians):
-            a = i*meridians+j
-            for b in [i*meridians+(j+1)%meridians] + ([a+meridians] if i<bands-1 else []):
-                edges.append((nodes[a], nodes[b]))
-    for a, b in sorted(edges, key=lambda e: e[0][2]+e[1][2]):
-        depth = (a[2]+b[2]+2)/4
-        color = blend(c.c["bg"], c.c["accent"], .13+.55*depth)
-        c.line([a[:2], b[:2]], color, .7 if depth<.5 else 1)
-    for i, (x, y, z) in sorted(enumerate(nodes), key=lambda n: n[1][2]):
-        if i % 7 == 0:
-            c.circle((x, y), 1.1+(z+1)*.7, blend(c.c["bg"], c.c["accent"], .25+.35*(z+1)))
-    # Three signal points travel on the same mesh, without flashing.
-    for phase in (0, 1/3, 2/3):
-        theta = math.tau*(t+phase)
-        p = project(math.cos(theta), 0, math.sin(theta), t*math.tau)
-        c.circle(p[:2], 8, "signal", False)
-        c.circle(p[:2], 3, "signal")
-    c.text((685, 108), "SOURCE", 11, "muted")
-    c.text((1024, 455), "STRUCTURE", 11, "muted")
-    c.line([(715, 126), (760, 153)], "signal")
-    c.line([(1004, 438), (1030, 447)], "signal")
+    all_nodes = []
+    for frame in range(frames+1 if motion else 1):
+        angle = frame/frames*math.tau if motion else 0
+        nodes=[]
+        for i in range(bands):
+            lat = -math.pi/2+(i+1)*math.pi/(bands+1)
+            for j in range(meridians):
+                lon=j*math.tau/meridians
+                nodes.append(project(math.cos(lat)*math.cos(lon), math.sin(lat), math.cos(lat)*math.sin(lon), angle))
+        all_nodes.append(nodes)
+    routes = [[i*meridians+j for j in range(meridians)]+[i*meridians] for i in range(bands)]
+    routes += [[i*meridians+j for i in range(bands)] for j in range(meridians)]
+    for route in routes:
+        values = [' '.join(f'{nodes[i][0]:.2f},{nodes[i][1]:.2f}' for i in route) for nodes in all_nodes]
+        animation = f'<animate attributeName="points" values="{";".join(values)}" dur="16s" repeatCount="indefinite"/>' if motion else ''
+        c.parts.append(f'<polyline points="{values[0]}" fill="none" stroke="{c.c["accent"]}" stroke-opacity=".48" stroke-width=".85">{animation}</polyline>')
+    for i in range(0,bands*meridians,7):
+        positions=[nodes[i] for nodes in all_nodes]
+        signals=i%5==0
+        radius=3 if signals else 1.8
+        animation=''
+        if motion:
+            for index, attr in enumerate(['cx','cy']):
+                values=';'.join(f'{p[index]:.2f}' for p in positions)
+                animation+=f'<animate attributeName="{attr}" values="{values}" dur="16s" repeatCount="indefinite"/>'
+        c.parts.append(f'<circle cx="{positions[0][0]:.2f}" cy="{positions[0][1]:.2f}" r="{radius}" fill="{c.c["signal" if signals else "accent"]}">{animation}</circle>')
 
-    c.text((40, 105), "David", 116, serif=True)
-    c.text((40, 213), "Wicker", 145, serif=True)
-    c.text((45, 390), "Making complex information", 27)
-    c.text((45, 429), "useful to people.", 27)
-    c.line([(42, 511), (1158, 511)])
-    for x, num, label in [(42, "01", "LEGAL RESEARCH"), (431, "02", "LANGUAGE"), (811, "03", "KNOWLEDGE")]:
-        c.text((x, 538), num, 13, "signal")
-        c.text((x+35, 536), label, 15, "accent")
+
+def hero(theme, motion=True):
+    c = Canvas(580, theme)
+    c.text((42, 29), "wicker.life", 17, "accent")
+    c.line([(42, 65), (1158, 65)])
+    for x in range(648,1159,30):
+        for y in range(95,490,30):
+            c.circle((x,y),.6,'line')
+    if motion:
+        c.parts.append('<style>.still{display:none}@media(prefers-reduced-motion:reduce){.motion{display:none}.still{display:inline}}</style><g class="motion">')
+        sphere(c,True)
+        c.parts.append('</g><g class="still">')
+        sphere(c,False)
+        c.parts.append('</g>')
+    else:
+        sphere(c,False)
+    c.text((40,105), 'David',116,serif=True)
+    c.text((40,213), 'Wicker',145,serif=True)
+    c.text((45,390), 'Developer and researcher.',27)
+    c.text((45,429), 'Maastricht, the Netherlands.',27)
+    c.line([(42,511),(1158,511)])
+    for x,num,label in [(42,'01','CASE LAW EXPLORER'),(465,'02','HAYEREN'),(851,'03','COMMONFOLD')]:
+        c.text((x,538),num,13,'signal')
+        c.text((x+35,536),label,15,'accent')
     return c.image()
 
 
-def card(theme, kind, frame=0):
+def card(theme, kind, motion=True):
     c = Canvas(230, theme)
     titles = ["Case Law Explorer", "Hayeren", "Commonfold"]
     domains = ["LEGAL RESEARCH", "EASTERN ARMENIAN", "PERSONAL KNOWLEDGE"]
@@ -180,41 +140,40 @@ def card(theme, kind, frame=0):
         [(788,109),(880,109),(976,109)],
     ]
     path = paths[kind]
-    for offset in (0, .5):
-        p = ((frame/40+offset) % 1) * (len(path)-1)
-        segment = min(int(p), len(path)-2)
-        a, b = path[segment:segment+2]
-        fraction = p-segment
-        xy = (a[0]+(b[0]-a[0])*fraction, a[1]+(b[1]-a[1])*fraction)
-        c.circle(xy, 5, "bg")
-        c.circle(xy, 3, "signal")
+    path_d='M'+' L'.join(f'{x},{y}' for x,y in path)
+    if motion:
+        c.parts.append('<style>@media(prefers-reduced-motion:reduce){.motion{display:none}}</style>')
+    for offset in (0, 2):
+        if motion:
+            c.parts.append(f'<circle class="motion" r="3.5" fill="{c.c["signal"]}" stroke="{c.c["bg"]}" stroke-width="1.5"><animateMotion path="{path_d}" dur="4s" begin="-{offset}s" repeatCount="indefinite"/></circle>')
+        else:
+            c.circle(path[offset%len(path)],3.5,'signal')
     return c.image()
 
 
 def main():
     for theme in THEMES:
-        frames = [hero(theme, i) for i in range(FRAMES)]
-        frames[0].save(ASSETS / f"hero-{theme}.png", optimize=True)
-        # One palette for the whole sequence prevents temporal color noise.
-        frames = [f.resize((960, 464), Image.Resampling.LANCZOS) for f in frames]
-        palette = frames[0].quantize(colors=96)
-        frames = [f.quantize(palette=palette, dither=Image.Dither.NONE) for f in frames]
-        frames[0].save(ASSETS / f"hero-{theme}.gif", save_all=True, append_images=frames[1:],
-                       duration=110, loop=0, optimize=True, disposal=1)
-        for kind, name in enumerate(["case-law", "hayeren", "commonfold"]):
-            card(theme, kind).save(ASSETS / f"{name}-{theme}.png", optimize=True)
-            sequence = [card(theme, kind, i).resize((960,184), Image.Resampling.LANCZOS) for i in range(40)]
-            palette = sequence[0].quantize(colors=96)
-            sequence = [f.quantize(palette=palette, dither=Image.Dither.NONE) for f in sequence]
-            sequence[0].save(ASSETS / f"{name}-{theme}.gif", save_all=True, append_images=sequence[1:],
-                             duration=100, loop=0, optimize=True, disposal=1)
-        print(f"Rendered {theme} artwork", flush=True)
-    readme = ROOT / "README.md"
+        for motion in (True,False):
+            suffix = '' if motion else '-still'
+            (ASSETS / f'hero-{theme}{suffix}.svg').write_text(hero(theme,motion))
+            for kind,name in enumerate(['case-law','hayeren','commonfold']):
+                (ASSETS/f'{name}-{theme}{suffix}.svg').write_text(card(theme,kind,motion))
+        for name,label,width in [('cv','CV',90),('research','Research',132),('linkedin','LinkedIn',132)]:
+            c=Canvas(42,theme,width)
+            c.text((17,13),label,15,'accent')
+            c.line([(width-25,25),(width-15,15)],'accent',1.4)
+            c.line([(width-23,15),(width-15,15),(width-15,23)],'accent',1.4)
+            (ASSETS/f'button-{name}-{theme}.svg').write_text(c.image())
+        print(f'Rendered {theme} SVG artwork',flush=True)
+    readme=ROOT/'README.md'
     if readme.exists():
-        static = readme.read_text().replace('.gif', '.png')
-        static = static.replace('[Still version](README-STATIC.md)', '[Animated version](README.md)')
-        (ROOT / "README-STATIC.md").write_text(static)
+        static=readme.read_text()
+        for theme in THEMES:
+            for name in ['hero','case-law','hayeren','commonfold']:
+                static=static.replace(f'{name}-{theme}.svg',f'{name}-{theme}-still.svg')
+        static=static.replace('[Still version](README-STATIC.md)','[Animated version](README.md)')
+        (ROOT/'README-STATIC.md').write_text(static)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
